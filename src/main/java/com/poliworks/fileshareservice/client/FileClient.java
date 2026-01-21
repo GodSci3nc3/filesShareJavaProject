@@ -20,12 +20,15 @@ public class FileClient {
     public List<FileInfo> listFiles() throws Exception {
         var req = HttpRequest.newBuilder().uri(URI.create(url + "/files")).GET().build();
         var res = http.send(req, HttpResponse.BodyHandlers.ofString());
+        if (res.statusCode() >= 400) throw new Exception("Server error: " + res.body());
         return gson.fromJson(res.body(), new TypeToken<List<FileInfo>>(){}.getType());
     }
 
     public byte[] readFile(String name) throws Exception {
         var req = HttpRequest.newBuilder().uri(URI.create(url + "/files/" + name)).GET().build();
-        return http.send(req, HttpResponse.BodyHandlers.ofByteArray()).body();
+        var res = http.send(req, HttpResponse.BodyHandlers.ofByteArray());
+        if (res.statusCode() >= 400) throw new Exception("File not found");
+        return res.body();
     }
 
     public void writeFile(String name, byte[] data) throws Exception {
