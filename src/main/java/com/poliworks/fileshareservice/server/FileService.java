@@ -5,36 +5,28 @@ import java.io.IOException;
 import java.util.*;
 import com.poliworks.fileshareservice.model.FileInfo;
 
-
 public class FileService {
-    
-    public List<FileInfo> listFiles(String directoryPath) throws IOException {
-        List<FileInfo> fileList = new ArrayList<>();
-        DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(directoryPath));
-        for (Path path : directoryStream) {
-            FileInfo fileInfo = new FileInfo(path.getFileName().toString(), Files.size(path), path.toString());
-            fileInfo.setFileName(path.getFileName().toString());
-            fileInfo.setFileSize(Files.size(path));
-            fileList.add(fileInfo);
+    public List<FileInfo> listFiles(String dir) throws IOException {
+        List<FileInfo> files = new ArrayList<>();
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(dir))) {
+            stream.forEach(p -> files.add(new FileInfo(
+                p.getFileName().toString(), 
+                p.toFile().length(), 
+                p.toString()
+            )));
         }
-        return fileList;
+        return files;
     }
 
-    public byte[] readFile(String filePath) throws IOException {
-        Path path = Paths.get(filePath);
-        return Files.readAllBytes(path);
+    public byte[] readFile(String path) throws IOException {
+        return Files.readAllBytes(Paths.get(path));
     }
 
-    public void writeFile(String filePath, byte[] data) throws IOException {
-        Path path = Paths.get(filePath);
-        Files.write(path, data);
+    public void writeFile(String path, byte[] data) throws IOException {
+        Files.write(Paths.get(path), data);
     }
 
-    public void deleteFile(String filePath) throws IOException {
-        Path path = Paths.get(filePath);
-        Files.delete(path);
+    public void deleteFile(String path) throws IOException {
+        Files.delete(Paths.get(path));
     }
-
-
-
 }

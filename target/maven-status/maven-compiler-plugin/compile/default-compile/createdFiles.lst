@@ -1,1 +1,8 @@
+com/poliworks/fileshareservice/gui/FileManagerGUI.class
+com/poliworks/fileshareservice/server/FileServer.class
+com/poliworks/fileshareservice/model/FileInfo.class
+com/poliworks/fileshareservice/gui/FileManagerGUI$1.class
+com/poliworks/fileshareservice/client/FileClient.class
+com/poliworks/fileshareservice/server/FileService.class
 com/poliworks/fileshareservice/App.class
+com/poliworks/fileshareservice/client/FileClient$1.class

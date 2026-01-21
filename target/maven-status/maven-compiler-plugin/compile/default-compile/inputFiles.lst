@@ -1,1 +1,6 @@
-/home/arthur/Escritorio/PoliWorks/AW2/file-share-service/src/main/java/com/poliworks/fileshareservice/App.java
+/home/arthur/Escritorio/PoliWorks/fileshareservice/src/main/java/com/poliworks/fileshareservice/App.java
+/home/arthur/Escritorio/PoliWorks/fileshareservice/src/main/java/com/poliworks/fileshareservice/client/FileClient.java
+/home/arthur/Escritorio/PoliWorks/fileshareservice/src/main/java/com/poliworks/fileshareservice/gui/FileManagerGUI.java
+/home/arthur/Escritorio/PoliWorks/fileshareservice/src/main/java/com/poliworks/fileshareservice/model/FileInfo.java
+/home/arthur/Escritorio/PoliWorks/fileshareservice/src/main/java/com/poliworks/fileshareservice/server/FileServer.java
+/home/arthur/Escritorio/PoliWorks/fileshareservice/src/main/java/com/poliworks/fileshareservice/server/FileService.java
