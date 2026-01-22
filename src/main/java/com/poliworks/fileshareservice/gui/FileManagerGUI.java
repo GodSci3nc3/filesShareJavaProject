@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 public class FileManagerGUI extends JFrame {
@@ -26,11 +27,12 @@ public class FileManagerGUI extends JFrame {
         JTable table = new JTable(model);
         
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton[] btns = {new JButton("↻"), new JButton("↑"), new JButton("↓"), new JButton("✕")};
+        JButton[] btns = {new JButton("↻"), new JButton("↑"), new JButton("↓"), new JButton("✕"), new JButton("✎")};
         btns[0].addActionListener(e -> refresh());
         btns[1].addActionListener(e -> upload());
         btns[2].addActionListener(e -> download(table.getSelectedRow()));
         btns[3].addActionListener(e -> delete(table.getSelectedRow()));
+        btns[4].addActionListener(e -> write(table.getSelectedRow()));
         for (JButton b : btns) panel.add(b);
 
         add(new JScrollPane(table), BorderLayout.CENTER);
@@ -83,6 +85,32 @@ public class FileManagerGUI extends JFrame {
             new Thread(() -> {
                 try {
                     client.deleteFile(name);
+                    refresh();
+                } catch (Exception e) { error(e.getMessage()); }
+            }).start();
+        }
+    }
+
+    private void write(int row) {
+        String name;
+        if (row != -1) {
+            name = (String) model.getValueAt(row, 0);
+        } else {
+            name = JOptionPane.showInputDialog(this, "File Name:");
+            if (name == null || name.trim().isEmpty()) return;
+        }
+
+        JTextArea ta = new JTextArea(20, 50);
+        if (row != -1) {
+            try {
+                ta.setText(new String(client.readFile(name), StandardCharsets.UTF_8));
+            } catch (Exception e) { error(e.getMessage()); return; }
+        }
+
+        if (JOptionPane.showConfirmDialog(this, new JScrollPane(ta), "Edit " + name, JOptionPane.OK_CANCEL_OPTION) == 0) {
+            new Thread(() -> {
+                try {
+                    client.writeFile(name, ta.getText().getBytes(StandardCharsets.UTF_8));
                     refresh();
                 } catch (Exception e) { error(e.getMessage()); }
             }).start();
