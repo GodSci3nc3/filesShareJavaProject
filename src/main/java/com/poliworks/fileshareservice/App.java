@@ -1,10 +1,9 @@
 package com.poliworks.fileshareservice;
 
 import com.poliworks.fileshareservice.server.FileServer;
-import com.poliworks.fileshareservice.gui.FileManagerGUI;
-import com.formdev.flatlaf.FlatDarkLaf;
+import com.poliworks.fileshareservice.server.FileServer;
 
-import javax.swing.SwingUtilities;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -17,9 +16,7 @@ public class App {
             new FileServer(dir).start(port);
             System.out.println("Server on port " + port);
         } else {
-            FlatDarkLaf.setup();
-            SwingUtilities.invokeLater(() -> 
-                new FileManagerGUI(args.length > 0 ? args[0] : "http://localhost:7000").setVisible(true));
+            new com.poliworks.fileshareservice.client.FileClientCLI().start();
         }
     }
 }
